@@ -1,0 +1,27 @@
+POST http://localhost:3333/videos
+Content-type: application/json; charset=utf-8
+
+{
+    "title": "Video 01",
+    "description": "Aula de NodeJS youtube",
+    "duration": 3000
+}
+
+###
+
+GET http://localhost:3333/videos?search=node
+
+###
+
+PUT http://localhost:3333/videos/08f04669-cd86-4433-adf3-1927f06c5377
+Content-type: application/json; charset=utf-8
+
+{
+    "title": "Video atualizado 01",
+    "description": "Aula de NodeJS youtube",
+    "duration": 5000
+}
+
+###
+
+DELETE http://localhost:3333/videos/08f04669-cd86-4433-adf3-1927f06c5377
