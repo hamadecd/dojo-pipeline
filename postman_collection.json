@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "124b8efa-05bd-43ea-b2d5-6c08b39422d1",
+		"name": "Videos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21750523"
+	},
+	"item": [
+		{
+			"name": "cadastra video",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Video 01\",\r\n    \"description\": \"Aula de NodeJS youtube\",\r\n    \"duration\": 3000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/videos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"videos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lista videos",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"    url: pm.environment.get('url')+'/videos',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'Content-Type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            \"title\": pm.variables.replaceIn('{{$randomAdjective}}'),\r",
+							"            \"description\": pm.variables.replaceIn('{{$randomCatchPhraseDescriptor}}'),\r",
+							"            \"duration\": pm.variables.replaceIn('{{$randomInt}}')\r",
+							"        })\r",
+							"    }\r",
+							"}, (err, res) => {\r",
+							"    if (err) {\r",
+							"        console.error(err);\r",
+							"        return;\r",
+							"    }\r",
+							"    \r",
+							"    if (res.code === 201) {\r",
+							"        console.log('Filme cadastrado com sucesso!');\r",
+							"    } else {\r",
+							"        console.error('Erro na solicitação POST:', res.code, res.body);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const ultimoItem = pm.response.json()[pm.response.json().length - 1];\r",
+							"    const ultimoItemId = ultimoItem.id;\r",
+							"    pm.environment.set('video_id', ultimoItemId)\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/videos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"videos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "atualiza video",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set('title', 'título atualizado ' + pm.variables.replaceIn('{{$randomFirstName}}'))"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"{{title}}\",\r\n    \"description\": \"Aula de NodeJS youtube\",\r\n    \"duration\": 5000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/videos/{{video_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"videos",
+						"{{video_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleta video",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/videos/{{video_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"videos",
+						"{{video_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
