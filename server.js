@@ -36,5 +36,5 @@ server.delete('/videos/:id', (request, reply) => {
 
 server.listen({
     port: 3333,
-    host: 'localhost'
+    host: ("RENDER" in process.env) ? `0.0.0.0` : `localhost`
 });
