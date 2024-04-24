@@ -35,5 +35,6 @@ server.delete('/videos/:id', (request, reply) => {
 });
 
 server.listen({
-    port: 3333
+    port: 3333,
+    host: 'localhost'
 });
